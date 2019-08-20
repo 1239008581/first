@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.StudentMapper">
+    <!-- 查询学生 -->
+    <select id="findStudentById" parameterType="_int" resultType="pojo.Student">
+        SELECT * FROM student WHERE studentID = #{id}
+    </select>
+    <!-- 增加用户 -->
+    <insert id="insertStudent" parameterType="pojo.Student">
+        INSERT INTO student(studentID, name) VALUES(#{id}, #{name})
+    </insert>
+    <!-- 删除用户 -->
+    <delete id="deleteStudent" parameterType="_int">
+        DELETE FROM student WHERE studentID = #{id}
+    </delete>
+    <!-- 修改用户 -->
+    <update id="updateStudent" parameterType="pojo.Student">
+        UPDATE student SET name = #{name} WHERE studentID = #{id}
+    </update>
+    <resultMap id="StudentInfoMap" type="pojo.StudentWithCard">
+    <!-- id 标签表示对应的主键
+         column 对应查询结果的列值
+         property 对应封装类中的属性名称
+         -->
+    <id column="id" property="id"/>
+    <result column="number" property="number"/>
+    <!-- association 表示关联的嵌套结果，
+         可以简单理解就是为封装类指定的标签 
+         -->
+    <association property="student" javaType="pojo.Student">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="card_id" property="card_id"/>
+    </association>
+</resultMap>
+</mapper>
